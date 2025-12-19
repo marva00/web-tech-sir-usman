@@ -30,8 +30,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/driving_school')
 const mainRoutes = require('./routes/index');
 const adminRoutes = require('./routes/admin');
 
-app.use('/', mainRoutes);
 app.use('/admin', adminRoutes);
+app.use('/', mainRoutes);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

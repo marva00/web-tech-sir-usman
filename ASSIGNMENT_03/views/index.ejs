@@ -47,11 +47,11 @@
             <section id="courses" class="features-section">
                 <div class="container">
                     <!-- Filter Form -->
-                    <div class="filter-container mb-5 p-4 bg-light rounded">
-                        <form action="/#courses" method="GET" class="row g-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Category</label>
-                                <select name="category" class="form-select">
+                    <div class="filter-container">
+                        <form action="/#courses" method="GET" class="filter-form">
+                            <div class="filter-group">
+                                <label>Category</label>
+                                <select name="category">
                                     <option value="All" <%=(typeof filters !=='undefined' && filters.category==='All' )
                                         ? 'selected' : '' %>>All Categories</option>
                                     <option value="License" <%=(typeof filters !=='undefined' &&
@@ -62,20 +62,20 @@
                                         filters.category==='Rental' ) ? 'selected' : '' %>>Rental</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Min Price</label>
-                                <input type="number" name="minPrice" class="form-control"
+                            <div class="filter-group">
+                                <label>Min Price</label>
+                                <input type="number" name="minPrice"
                                     value="<%= (typeof filters !== 'undefined') ? filters.minPrice : '' %>"
                                     placeholder="0">
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Max Price</label>
-                                <input type="number" name="maxPrice" class="form-control"
+                            <div class="filter-group">
+                                <label>Max Price</label>
+                                <input type="number" name="maxPrice"
                                     value="<%= (typeof filters !== 'undefined') ? filters.maxPrice : '' %>"
                                     placeholder="2000">
                             </div>
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                            <div class="filter-group">
+                                <button type="submit" class="filter-btn">Filter</button>
                             </div>
                         </form>
                     </div>
@@ -115,32 +115,32 @@
 
                                 <!-- Pagination -->
                                 <% if (totalPages> 1) { %>
-                                    <nav aria-label="Page navigation" class="mt-4">
-                                        <ul class="pagination justify-content-center">
-                                            <% if (currentPage> 1) { %>
-                                                <li class="page-item">
-                                                    <a class="page-link"
-                                                        href="/?page=<%= currentPage - 1 %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">Previous</a>
-                                                </li>
-                                                <% } %>
+                                    <div class="pagination-container">
+                                        <% if (currentPage> 1) { %>
+                                            <a
+                                                href="/?page=<%= currentPage - 1 %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">«
+                                                Previous</a>
+                                            <% } %>
 
-                                                    <% for(let i=1; i<=totalPages; i++) { %>
-                                                        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                                            <a class="page-link"
+                                                <% for(let i=1; i<=totalPages; i++) { %>
+                                                    <% if (currentPage===i) { %>
+                                                        <span class="active">
+                                                            <%= i %>
+                                                        </span>
+                                                        <% } else { %>
+                                                            <a
                                                                 href="/?page=<%= i %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">
                                                                 <%= i %>
                                                             </a>
-                                                        </li>
-                                                        <% } %>
-
-                                                            <% if (currentPage < totalPages) { %>
-                                                                <li class="page-item">
-                                                                    <a class="page-link"
-                                                                        href="/?page=<%= currentPage + 1 %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">Next</a>
-                                                                </li>
+                                                            <% } %>
                                                                 <% } %>
-                                        </ul>
-                                    </nav>
+
+                                                                    <% if (currentPage < totalPages) { %>
+                                                                        <a
+                                                                            href="/?page=<%= currentPage + 1 %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">Next
+                                                                            »</a>
+                                                                        <% } %>
+                                    </div>
                                     <% } %>
                                         <% } else { %>
                                             <div class="text-center">

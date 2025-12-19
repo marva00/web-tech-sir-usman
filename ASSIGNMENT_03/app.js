@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const mainRoutes = require('./routes/index');
 const app = express();
 const port = 3000;
 
@@ -17,7 +18,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/driving_school')
     .catch(err => console.error('Could not connect to MongoDB', err));
 
 // Routes
-const mainRoutes = require('./routes/index');
+
 app.use('/', mainRoutes);
 
 app.listen(port, () => {
