@@ -1,0 +1,123 @@
+<div class="container py-5">
+    <h2 class="mb-4 text-center">
+        <span class="highlight">ORDER</span> PREVIEW
+    </h2>
+    <p class="text-center text-muted mb-5">Review your order before confirming</p>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Order Items</h5>
+                </div>
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-end">Unit Price</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% cart.forEach(item=> { %>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="<%= item.image %>" alt="<%= item.name %>"
+                                            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+                                            class="me-3">
+                                        <span>
+                                            <%= item.name %>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <%= item.quantity %>
+                                </td>
+                                <td class="text-end">$<%= item.price.toFixed(2) %>
+                                </td>
+                                <td class="text-end fw-bold">$<%= (item.price * item.quantity).toFixed(2) %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-dark">
+                            <td colspan="3" class="text-end fs-5 fw-bold">Grand Total:</td>
+                            <td class="text-end fs-5 fw-bold text-warning">$<%= grandTotal.toFixed(2) %>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Confirm Your Order</h5>
+                    <hr>
+
+                    <div class="mb-3">
+                        <p class="mb-1"><strong>Items:</strong>
+                            <%= cart.length %>
+                        </p>
+                        <p class="mb-1"><strong>Total Quantity:</strong>
+                            <%= cart.reduce((sum, item)=> sum + item.quantity, 0) %>
+                        </p>
+                    </div>
+
+                    <hr>
+
+                    <form action="/order/preview" method="GET" class="mb-4">
+                        <label class="form-label">Have a coupon?</label>
+                        <div class="input-group">
+                            <input type="text" name="coupon" class="form-control" placeholder="SAVE10"
+                                value="<%= discount.code %>">
+                            <button type="submit" class="btn btn-dark">Apply</button>
+                        </div>
+                        <% if (discount.applied) { %>
+                            <small class="text-success fw-bold">Coupon applied: <%= discount.code %> (10% OFF)</small>
+                            <% } else if (discount.code) { %>
+                                <small class="text-danger">Invalid coupon code</small>
+                                <% } %>
+                    </form>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Original Total:</span>
+                        <span class="fw-bold">$<%= discount.originalTotal.toFixed(2) %></span>
+                    </div>
+                    <% if (discount.applied) { %>
+                        <div class="d-flex justify-content-between mb-1 text-success">
+                            <span>Discount (10%):</span>
+                            <span class="fw-bold">-$<%= discount.discountAmount.toFixed(2) %></span>
+                        </div>
+                        <% } %>
+                            <div class="d-flex justify-content-between mb-4">
+                                <span class="fs-5 fw-bold">Grand Total:</span>
+                                <span class="fs-5 fw-bold text-primary">$<%= grandTotal.toFixed(2) %></span>
+                            </div>
+
+                            <form action="/order/confirm" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label">Email for Order Tracking</label>
+                                    <input type="email" name="customerEmail" class="form-control"
+                                        placeholder="your@email.com" required>
+                                </div>
+                                <input type="hidden" name="coupon" value="<%= discount.code %>">
+                                <button type="submit" class="btn btn-success btn-lg w-100 mb-2">
+                                    ✓ Confirm Order
+                                </button>
+                            </form>
+
+                            <a href="/cart" class="btn btn-outline-secondary w-100">
+                                ← Go Back to Cart
+                            </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

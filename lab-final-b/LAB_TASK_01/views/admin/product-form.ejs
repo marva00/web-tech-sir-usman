@@ -1,0 +1,50 @@
+<h1>
+    <%= editing ? 'Edit Product' : 'Add Product' %>
+</h1>
+
+<form action="/admin/<%= editing ? 'edit-product' : 'add-product' %>" method="POST">
+    <% if (editing) { %>
+        <input type="hidden" name="productId" value="<%= product._id %>">
+        <% } %>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="<%= editing ? product.name : '' %>"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" id="category" name="category" required>
+                    <option value="License" <%=(editing && product.category==='License' ) ? 'selected' : '' %>>License
+                    </option>
+                    <option value="Safety" <%=(editing && product.category==='Safety' ) ? 'selected' : '' %>>Safety
+                    </option>
+                    <option value="Rental" <%=(editing && product.category==='Rental' ) ? 'selected' : '' %>>Rental
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price ($)</label>
+                <input type="number" class="form-control" id="price" name="price"
+                    value="<%= editing ? product.price : '' %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image URL</label>
+                <input type="text" class="form-control" id="image" name="image"
+                    value="<%= editing ? product.image : '' %>" placeholder="/images/product.jpg" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3"
+                    required><%= editing ? product.description : '' %></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <%= editing ? 'Update Product' : 'Add Product' %>
+            </button>
+            <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+</form>

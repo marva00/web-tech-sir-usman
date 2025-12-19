@@ -1,0 +1,212 @@
+<!-- 1. Hero Section -->
+<section id="home" class="hero" role="banner">
+    <div class="container">
+        <div class="hero-content">
+            <h1>WE'LL TEACH YOU<br />
+                <span class="highlight">SAFE DRIVING</span><br />
+                ON TWO WHEELS
+            </h1>
+            <p>Duis sed odio sit amet nibh vulputate cursus a sit <br>amet mauris
+                Morbi accuam nectellus.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Section Heading -->
+<section class="section-heading-strip">
+    <div class="container">
+        <h2>CHOOSE <span class="highlight">A LICENSE</span> YOU WANT TO GET</h2>
+    </div>
+</section>
+
+<!-- 2. Features/Services Section (Dynamic) -->
+<section id="courses" class="features-section">
+    <div class="container">
+        <!-- Filter Form -->
+        <div class="filter-container mb-5 p-4 bg-light rounded">
+            <form action="/#courses" method="GET" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-select">
+                        <option value="All" <%=(typeof filters !=='undefined' && filters.category==='All' ) ? 'selected'
+                            : '' %>>All Categories</option>
+                        <option value="License" <%=(typeof filters !=='undefined' && filters.category==='License' )
+                            ? 'selected' : '' %>>License</option>
+                        <option value="Safety" <%=(typeof filters !=='undefined' && filters.category==='Safety' )
+                            ? 'selected' : '' %>>Safety</option>
+                        <option value="Rental" <%=(typeof filters !=='undefined' && filters.category==='Rental' )
+                            ? 'selected' : '' %>>Rental</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Min Price</label>
+                    <input type="number" name="minPrice" class="form-control"
+                        value="<%= (typeof filters !== 'undefined') ? filters.minPrice : '' %>" placeholder="0">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Max Price</label>
+                    <input type="number" name="maxPrice" class="form-control"
+                        value="<%= (typeof filters !== 'undefined') ? filters.maxPrice : '' %>" placeholder="2000">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+
+        <% if (typeof error !=='undefined' && error) { %>
+            <div class="alert alert-danger text-center" role="alert">
+                <h4 class="alert-heading">Connection Error!</h4>
+                <p>
+                    <%= error %>
+                </p>
+                <hr>
+                <p class="mb-0">Please check if your MongoDB server is installed and running.</p>
+            </div>
+            <% } %>
+
+                <% if (products.length> 0) { %>
+                    <div class="features-grid" style="flex-wrap: wrap; justify-content: center;">
+                        <% products.forEach(product=> { %>
+                            <article class="feature-card mb-4">
+                                <img src="<%= product.image %>" alt="<%= product.name %>" class="feature-image"
+                                    style="width: 100%; height: 200px; object-fit: cover;">
+                                <h4>
+                                    <%= product.name %>
+                                </h4>
+                                <p>
+                                    <%= product.description %>
+                                </p>
+                                <p class="text-primary fw-bold">$<%= product.price %>
+                                </p>
+                                <span class="badge bg-secondary">
+                                    <%= product.category %>
+                                </span>
+                                <div class="mt-3">
+                                    <a href="/product/<%= product._id %>"
+                                        class="btn btn-outline-dark btn-sm w-100 mb-2">View Details</a>
+                                    <form action="/cart/add/<%= product._id %>" method="POST">
+                                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                                            Add to Cart
+                                        </button>
+                                    </form>
+                                </div>
+                            </article>
+                            <% }) %>
+                    </div>
+
+                    <!-- Pagination -->
+                    <% if (totalPages> 1) { %>
+                        <nav aria-label="Page navigation" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                <% if (currentPage> 1) { %>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="/?page=<%= currentPage - 1 %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">Previous</a>
+                                    </li>
+                                    <% } %>
+                                        <% for(let i=1; i<=totalPages; i++) { %>
+                                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                                <a class="page-link"
+                                                    href="/?page=<%= i %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">
+                                                    <%= i %>
+                                                </a>
+                                            </li>
+                                            <% } %>
+                                                <% if (currentPage < totalPages) { %>
+                                                    <li class="page-item">
+                                                        <a class="page-link"
+                                                            href="/?page=<%= currentPage + 1 %>&category=<%= filters.category %>&minPrice=<%= filters.minPrice %>&maxPrice=<%= filters.maxPrice %>#courses">Next</a>
+                                                    </li>
+                                                    <% } %>
+                            </ul>
+                        </nav>
+                        <% } %>
+                            <% } else { %>
+                                <div class="text-center">
+                                    <p>No products found trying adjusting your filters.</p>
+                                </div>
+                                <% } %>
+    </div>
+</section>
+
+<!-- Section Heading -->
+<section class="section-heading-strip">
+    <div class="container">
+        <h2>WELCOME TO <span class="highlight">THE BEST</span> DRIVING SCHOOL IN USA</h2>
+    </div>
+</section>
+
+<!-- Information Section -->
+<section id="info" class="info-section">
+    <div class="container">
+        <div class="info-grid">
+            <div class="info-column">
+                <h3>OUR COMPANY</h3>
+                <img src="/images/home_drivingschool_about.jpg" alt="Company shield logo" class="info-image">
+                <h6>Onceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condim</h6>
+                <p>Estibulum dapibus, maurimalesfames ac turpis velit, rhoncus eu, luctus et interdum
+                    adipiscing wisi. Aliquam erat ac ipsum. Integer aliquam purus ultricies gravida vitae...</p>
+            </div>
+            <div class="info-column">
+                <h3>INFORMATION CENTRE</h3>
+                <ul class="info-list">
+                    <li><a href="#">Odio sit amet nibh vulputate cursus a sit amet. Proin gravida nibh vel velit auctor
+                            aliquet</a></li>
+                    <li><a href="#">Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec
+                            sagittis sem nibh id elit.</a></li>
+                    <li><a href="#">Duis sed odio sit amet nibh vulputate cursus.</a></li>
+                    <li><a href="#">Morbi accumsan ipsum velit.</a></li>
+                    <li><a href="#">Mauris in erat justo. Nullam ac urna eu felis augue.</a></li>
+                    <li><a href="#">Aenean ligula nibh in, molestie id viverra a, dapibus at dolor. Duis sed odio sit
+                            amet.</a></li>
+                </ul>
+            </div>
+            <div id="gallery" class="info-column">
+                <h3>PHOTO GALLERY</h3>
+                <div class="gallery-grid">
+                    <img src="/images/PhotoGallery01.png" alt="Gallery image of a sports car">
+                    <img src="/images/PhotoGallery02.png" alt="Gallery image of a motorcycle rider">
+                    <img src="/images/PhotoGallery03.png" alt="Gallery image of a red race car">
+                    <img src="/images/PhotoGallery04.png" alt="Gallery image of a motorcycle in motion">
+                    <img src="/images/PhotoGallery05.png" alt="Gallery image of a black sports car">
+                    <img src="/images/PhotoGallery06.png" alt="Gallery image of a person riding a motorcycle">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Social Proof Section (Static Testimonial) -->
+<section id="contact" class="social-proof-section">
+    <div class="testimonial-authors-background"></div>
+    <div class="container">
+        <div class="testimonial-authors">
+            <div class="author-avatar active">
+                <img src="/images/Team_04.jpg" alt="Portrait of Gordon Dale">
+            </div>
+            <div class="author-avatar">
+                <img src="/images/Team_02.jpg" alt="Portrait of John Doe">
+            </div>
+            <div class="author-avatar">
+                <img src="/images/Team_03.jpg" alt="Portrait of Joan Avina">
+            </div>
+            <div class="author-avatar">
+                <img src="/images/Team_01.jpg" alt="Portrait of another team member">
+            </div>
+        </div>
+        <figure class="testimonial-card">
+            <blockquote>
+                Aliquam erat ac ipsum. Integer aliquam purus. Quisque lorem tortor fringilla sed, vestibulum
+                id, eleifend justo vel bibendum sapien massa ac turpis faucibus orci luctus non,
+                consectetuer lobortis quis, varius in, purus. Integer ultrices posuere cubilia.
+            </blockquote>
+            <div class="hr-dots"><span></span><span></span><span></span></div>
+            <figcaption>
+                <h5>Gordon Dale</h5>
+                <span class="company">Themeforest</span>
+            </figcaption>
+        </figure>
+    </div>
+</section>

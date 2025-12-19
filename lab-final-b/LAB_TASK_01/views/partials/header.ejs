@@ -1,0 +1,29 @@
+<header class="header">
+    <div class="container">
+        <a href="/" class="logo">
+            <img src="/images/logo.png" alt="Driving School Logo" />
+        </a>
+        <nav class="nav" role="navigation" aria-label="Main navigation">
+            <ul>
+                <li><a href="/" class="<%= (typeof page !== 'undefined' && page === 'home') ? 'active' : '' %>"><img
+                            src="/images/home_icon.svg" alt="" class="nav-icon">Home</a></li>
+                <li><a href="/#courses"><img src="/images/degree_icon.svg" alt="" class="nav-icon">Courses and exams</a>
+                </li>
+                <li><a href="/#info"><img src="/images/information_icon.svg" alt="" class="nav-icon">Information
+                        centre</a></li>
+                <li><a href="/#gallery"><img src="/images/imageGallery_icon.svg" alt="" class="nav-icon">Image
+                        gallery</a></li>
+                <li><a href="/#contact"><img src="/images/contactUs_icon.svg" alt="" class="nav-icon">Contact us</a>
+                </li>
+                <li><a href="/cart" class="<%= (typeof page !== 'undefined' && page === 'cart') ? 'active' : '' %>">🛒
+                        Cart <% if (typeof cartCount !=='undefined' && cartCount> 0) { %><span class="badge bg-danger">
+                                <%= cartCount %>
+                            </span>
+                            <% } %></a></li>
+                <li><a href="/checkout"
+                        class="btn-buy <%= (typeof page !== 'undefined' && page === 'checkout') ? 'active' : '' %>">Buy
+                        now</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

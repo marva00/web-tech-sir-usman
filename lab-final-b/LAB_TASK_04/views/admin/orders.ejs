@@ -1,0 +1,75 @@
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>ADMIN: <span class="highlight">MANAGE</span> ORDERS</h2>
+        <a href="/admin/dashboard" class="btn btn-outline-secondary btn-sm">Back to Dashboard</a>
+    </div>
+
+    <% if (orders.length===0) { %>
+        <div class="alert alert-info text-center">
+            No orders have been placed yet.
+        </div>
+        <% } else { %>
+            <div class="card shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Email</th>
+                                <th>Date</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orders.forEach(order=> { %>
+                                <tr>
+                                    <td><small>
+                                            <%= order._id %>
+                                        </small></td>
+                                    <td>
+                                        <%= order.customerEmail %>
+                                    </td>
+                                    <td>
+                                        <%= order.createdAt.toLocaleDateString() %>
+                                    </td>
+                                    <td class="text-end fw-bold text-primary">$<%= order.grandTotal.toFixed(2) %>
+                                    </td>
+                                    <td class="text-center">
+                                        <% let badgeClass='bg-primary' ; %>
+                                            <% if (order.status==='Processing' ) badgeClass='bg-warning text-dark' ; %>
+                                                <% if (order.status==='Delivered' ) badgeClass='bg-success' ; %>
+                                                    <span class="badge <%= badgeClass %>">
+                                                        <%= order.status %>
+                                                    </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <% if (order.status==='Placed' ) { %>
+                                                <form action="/admin/orders/update-status/<%= order._id %>"
+                                                    method="POST">
+                                                    <input type="hidden" name="newStatus" value="Processing">
+                                                    <button type="submit"
+                                                        class="btn btn-warning btn-sm">Process</button>
+                                                </form>
+                                                <% } else if (order.status==='Processing' ) { %>
+                                                    <form action="/admin/orders/update-status/<%= order._id %>"
+                                                        method="POST">
+                                                        <input type="hidden" name="newStatus" value="Delivered">
+                                                        <button type="submit"
+                                                            class="btn btn-success btn-sm">Deliver</button>
+                                                    </form>
+                                                    <% } else { %>
+                                                        <span class="text-muted small">Completed</span>
+                                                        <% } %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <% } %>
+</div>
